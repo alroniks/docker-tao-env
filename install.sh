@@ -11,7 +11,7 @@ fi
 dbuser=$PROJECT_NAME
 dbpass=$PROJECT_NAME
 dbname=$PROJECT_NAME
-dbhost="db"
+dbhost="dbs"
 adminuser="admin"
 adminpass="QaSx1234!1"
 taourl="http://$PROJECT_NAME.docker$PORT"
