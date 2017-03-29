@@ -21,6 +21,10 @@ Full list of command in `Makefile`.
 
 Here a few screenshots with filled form fields in case when we use `taodoc` name. If you chose another name, replace taodoc by your name.
 
+![Server Setup](/.docs/00.png?raw=true)
+
+![Database Configuration](/.docs/01.png?raw=true)
+
 **Troubleshooting.**
 
 - Such as 80 port can be used only once in the system, `init` command has option PORT to set different port for instance. Ex: `make init PORT=2001`, by default 80. 
