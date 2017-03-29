@@ -4,8 +4,11 @@ This gist with a bunch of files and scripts that will allow using TAO within doc
 Below a little instruction how to use it:
 
 1. At first you need download and install Docker and Docker Compose. (https://www.docker.com/products/overview)
-2. Then you need download ZIP archive from GitHub Gist (https://gist.github.com/Alroniks/4a09104ef35198171e537e29b94bddb4)
-3. After unzipping rename folder as you want. For example: taodoc. This name will be used as project_name.
+2. Then you need clone this repositiry or download ZIP archive of this repo to any place on your computer.
+```
+git clone https://github.com/Alroniks/docker-tao-env taodoc
+```
+3. After unzipping rename folder as you want. For example: `taodoc`. This name will be used as a project name. In a case of cloning, renaming doesn't require.
 4. Init: This step can be skipped, but if you use mac or linux it should work. Run `make init` in the folder with files. This script will patch project name in config by the name of the current folder.
 5. Run containers: When configs were patched to run our environment `make up`. Docker will pull images and run containers. By default will be installed latest production release of TAO project. It can take a few minutes while all files from container with tao will be synced with host.
 6. Add domain to /etc/hosts. Domain will be projectname.docker, for example taodoc.docker. 
