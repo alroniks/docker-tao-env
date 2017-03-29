@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  tao:
+    image: alroniks/tao
+    restart: always
+    volumes:
+      - .:/var/www/html
+    links:
+      - dbs
+  web:
+    image: nginx
+    restart: always
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes_from:
+      - tao
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - tao
+  dbs:
+    image: mysql
+    restart: always
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - data:/var/lib/mysql:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: "${PROJECT_NAME}"
+      MYSQL_USER: "${PROJECT_NAME}"
+      MYSQL_PASSWORD: "${PROJECT_NAME}"
+      MYSQL_DATABASE: "${PROJECT_NAME}"
+
+volumes:
+  data:
+    driver: local
