@@ -7,23 +7,28 @@ These configuration files and scripts make it easy to stand up a [TAO](https://w
 
 1. Download and install Docker and Docker Compose. (https://www.docker.com/products/overview)
 
-2. Clone this repository or download a ZIP archive of this repo. Optionally, change the folder name of your repo (e.g. `taodoc` below).
+2. Clone this repository or download a ZIP archive of this repo. If you clone the repo, change the name of the folder (e.g. `taodoc` below).
 
-  This name will be used as the project's name. For this configuration, the recommendation is to use _only_ alpha characters with no hyphens or underscores.
+  This name will be used as the project's name and other configuration values. For this configuration, the recommendation is to use _only_ alpha characters with no hyphens or underscores.
 
   ```
   git clone https://github.com/Alroniks/docker-tao-env taodoc
   ```
 
-3. If you unzipped an archive, optionally rename the folder (e.g. `taodoc`) to define the project name.
+3. If you unzipped an archive, rename the folder (e.g. `taodoc`) to define the project name.
 
-4. `make init`: This step can be skipped, but if you use MacOS or Linux it should work. This script will apply the project name in config files using the name of the current folder.
+4. `make init`: This task will apply the project name to config files using the name of the current folder.
 
   If you want to run on a port other than `80`, for example `8080`, run `make init PORT=8080`.
 
-5. `make up`: Running this command will cause Docker to pull down the images and run the containers. By default the latest production release of TAO will be installed. It can take a few minutes for this to happen.
+5. `make up`: This task will cause Docker to pull down the images and run the containers. By default the latest production release of TAO will be installed. It can take a few minutes for this to happen.
 
 6. Add your domain to `/etc/hosts`. The default domain will be `projectname.docker`, for example `taodoc.docker`.
+
+  ```
+  ... previous entries ...
+  127.0.0.1   taodoc.docker   localhost
+  ```
 
 
 ## Finish TAO installation
@@ -53,7 +58,7 @@ Full list of command in `Makefile`.
 
 ## Troubleshooting
 
-* Port 80 can only be used once in the system and it requires elevated privileges. Consider using `make init PORT=8080` as an alternative.
+* Port 80 can only be used once in the system. If you already have a site running on port 80, consider using `make init PORT=8080` in step 4 above.
 
 * To run multiple projects at the same time, use a local nginx configuration with proxied requests to the docker instances. Here is an example of the configuration:
 
