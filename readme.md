@@ -1,55 +1,79 @@
+# docker-tao-env
 
-This gist with a bunch of files and scripts that will allow using TAO within docker containers. 
+These configuration files and scripts make it easy to stand up a [TAO](https://www.taotesting.com) environment using docker containers.
 
-Below a little instruction how to use it:
 
-1. At first you need download and install Docker and Docker Compose. (https://www.docker.com/products/overview)
-2. Then you need clone this repositiry or download ZIP archive of this repo to any place on your computer.
-```
-git clone https://github.com/Alroniks/docker-tao-env taodoc
-```
-3. After unzipping rename folder as you want. For example: `taodoc`. This name will be used as a project name. In a case of cloning, renaming doesn't require.
-4. Init: This step can be skipped, but if you use mac or linux it should work. Run `make init` in the folder with files. This script will patch project name in config by the name of the current folder.
-5. Run containers: When configs were patched to run our environment `make up`. Docker will pull images and run containers. By default will be installed latest production release of TAO project. It can take a few minutes while all files from container with tao will be synced with host.
-6. Add domain to /etc/hosts. Domain will be projectname.docker, for example taodoc.docker. 
+## Setup
 
-Now you can go to http://taodoc.docker and start install by hands. Or run `make install` for installation in cli mode. 
+1. Download and install Docker and Docker Compose. (https://www.docker.com/products/overview)
 
-For go inside container use `make shell`.
+2. Clone this repository or download a ZIP archive of this repo. Optionally, change the folder name of your repo (e.g. `taodoc` below).
 
-Also available commands: `make update` for updating project and `make down` for destroy container. Mysql container use shared data volume so you don’t need to install project after every `up`.
-Full list of command in `Makefile`.
+  This name will be used as the project's name. For this configuration, the recommendation is to use _only_ alpha characters with no hyphens or underscores.
 
-**Manual Installation**
+  ```
+  git clone https://github.com/Alroniks/docker-tao-env taodoc
+  ```
 
-Here a few screenshots with filled form fields in case when we use `taodoc` name. If you chose another name, replace taodoc by your name.
+3. If you unzipped an archive, optionally rename the folder (e.g. `taodoc`) to define the project name.
+
+4. `make init`: This step can be skipped, but if you use MacOS or Linux it should work. This script will apply the project name in config files using the name of the current folder.
+
+  If you want to run on a port other than `80`, for example `8080`, run `make init PORT=8080`.
+
+5. `make up`: Running this command will cause Docker to pull down the images and run the containers. By default the latest production release of TAO will be installed. It can take a few minutes for this to happen.
+
+6. Add your domain to `/etc/hosts`. The default domain will be `projectname.docker`, for example `taodoc.docker`.
+
+
+## Finish TAO installation
+
+Now you can go to http://projectname.docker and complete the TAO web-based installation. Alternatively, you can run `make install` to complete a CLI installation.
+
+
+### TAO Web-based Installation
+
+Here a few screen shots with some form fields filled in with `taodoc` used as the project's name.
 
 ![Server Setup](/.docs/00.png?raw=true)
 
+> **NOTE**: The database is configured by default to use the project name as the value for the database's name, the database admin's username, and the password for the database admin. Use `dbs` as the database's hostname. This is all configured in `docker-compose.yml`.
+
 ![Database Configuration](/.docs/01.png?raw=true)
 
-**Troubleshooting.**
 
-- Such as 80 port can be used only once in the system, `init` command has option PORT to set different port for instance. Ex: `make init PORT=2001`, by default 80. 
-  For run some projects at the same time I use local nginx with proxied requests to docker instances. Example of config:
+## Maintenance
 
-```
-upstream mpart {
-    server 0.0.0.0:2001;
-}
+To log into the container use `make shell`.
 
-server {
-    listen 127.0.0.1:80;
-    server_name taodoc.docker;
-    root /Users/alroniks/dev/docker/taodoc;
-    location / {
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-NginX-Proxy true;
-        proxy_pass http://taodoc;
-    }
-}
-```
+Also available commands: `make update` for updating project and `make down` for destroy container. Mysql container use shared data volume so you don’t need to install project after every `up`.
 
-- Not sure that `make` command will work in Windows but should.
+Full list of command in `Makefile`.
+
+
+## Troubleshooting
+
+* Port 80 can only be used once in the system and it requires elevated privileges. Consider using `make init PORT=8080` as an alternative.
+
+* To run multiple projects at the same time, use a local nginx configuration with proxied requests to the docker instances. Here is an example of the configuration:
+
+  ```
+  upstream mpart {
+      server 0.0.0.0:2001;
+  }
+
+  server {
+      listen 127.0.0.1:80;
+      server_name taodoc.docker;
+      root /Users/alroniks/dev/docker/taodoc;
+      location / {
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_set_header X-NginX-Proxy true;
+          proxy_pass http://taodoc;
+      }
+  }
+  ```
+
+* To run the `make` command in Windows, you might need the [GnuWin32](http://gnuwin32.sourceforge.net/packages/make.htm) utility.
