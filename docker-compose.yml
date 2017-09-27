@@ -2,7 +2,7 @@ version: '2'
 
 services:
   tao:
-    image: locksmithdon/tao
+    image: alroniks/tao
     restart: always
     volumes:
       - .:/var/www/html
