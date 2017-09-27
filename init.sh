@@ -8,7 +8,9 @@ fi
 
 PROJECT_NAME=`basename "$PWD"`
 
-replace "tao.docker" "$PROJECT_NAME.docker" -- nginx.conf
-replace "tao" "$PROJECT_NAME" -- nginx-proxy.conf
-replace "NGINX_PORT=80" "NGINX_PORT=$NGINX_PORT" -- .env
-replace "PROJECT_NAME=tao" "PROJECT_NAME=$PROJECT_NAME" -- .env
+# Using @ instead of / because $PWD contains /'s
+sed -i "s@PROJECT_ROOT_VALUE@$PWD@g" nginx-proxy.conf
+sed -i "s/PROJECT_NAME_VALUE/$PROJECT_NAME/g" nginx-proxy.conf
+sed -i "s/PROJECT_NAME_VALUE/$PROJECT_NAME/g" nginx.conf
+sed -i "s/NGINX_PORT=80/NGINX_PORT=$NGINX_PORT/g" .env
+sed -i "s/PROJECT_NAME_VALUE/$PROJECT_NAME/g" .env
